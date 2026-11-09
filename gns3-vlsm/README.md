@@ -20,25 +20,25 @@ Topologi terdiri dari **52 perangkat dan 51 kabel**. Perangkatnya terdiri dari 1
 
 ## Perhitungan VLSM
 
-Kebutuhan IP suatu subnet dihitung dari jumlah host pada gambar ditambah jumlah interface router yang terhubung ke subnet tersebut. Port switch pada topologi ini tidak diberi IP. Contohnya, A6 membutuhkan `700 (Karl) + 180 (Lin) + 1 (Psyche) = 881 IP`. Setelah menambah dua alamat untuk Network ID dan broadcast, kebutuhan bloknya menjadi 883 alamat. Pangkat dua terkecil yang memenuhi kebutuhan itu adalah `2^10 = 1.024`, sehingga prefix A6 adalah `32 − 10 = /22`.
+Kebutuhan IP suatu subnet dihitung dari jumlah host pada gambar ditambah jumlah interface router yang terhubung ke subnet tersebut. Port switch pada topologi ini tidak diberi IP. Contohnya, A4 membutuhkan `700 (Karl) + 180 (Lin) + 1 (Psyche) = 881 IP`. Setelah menambah dua alamat untuk Network ID dan broadcast, kebutuhan bloknya menjadi 883 alamat. Pangkat dua terkecil yang memenuhi kebutuhan itu adalah `2^10 = 1.024`, sehingga prefix A4 adalah `32 − 10 = /22`.
 
 Ukuran 25 blok setelah pembulatan berjumlah 4.188 alamat. Blok `/20` menyediakan 4.096 alamat, sehingga alokasi dimulai dari `192.234.0.0/19` yang menyediakan 8.192 alamat.
 
-Pohon VLSM membagi blok induk menjadi dua blok sama besar setiap kali prefix bertambah satu. Cabang di bawah memperlihatkan cara mendapatkan dua blok `/22` untuk A6 dan A11.
+Pohon VLSM membagi blok induk menjadi dua blok sama besar setiap kali prefix bertambah satu. Cabang di bawah memperlihatkan cara mendapatkan dua blok `/22` untuk A4 dan A9.
 
 ```text
 192.234.0.0/19
 ├── 192.234.0.0/20
 │   ├── 192.234.0.0/21
-│   │   ├── 192.234.0.0/22  A6
-│   │   └── 192.234.4.0/22  A11
+│   │   ├── 192.234.0.0/22  A4
+│   │   └── 192.234.4.0/22  A9
 │   └── 192.234.8.0/21      Dibagi lagi untuk subnet berikutnya
 └── 192.234.16.0/20         Dibagi lagi untuk subnet kecil dan link router
 ```
 
-Netmask `/22` adalah `255.255.252.0`. Oktet ketiga bertambah `256 − 252 = 4` setiap pindah blok. A6 dimulai dari `192.234.0.0`, jadi batas blok berikutnya adalah `192.234.4.0`. Broadcast A6 adalah satu alamat sebelum batas itu, yaitu `192.234.3.255`. Rentang IP yang bisa dipakai adalah `192.234.0.1` sampai `192.234.3.254`. A11 mulai di `192.234.4.0`.
+Netmask `/22` adalah `255.255.252.0`. Oktet ketiga bertambah `256 − 252 = 4` setiap pindah blok. A4 dimulai dari `192.234.0.0`, jadi batas blok berikutnya adalah `192.234.4.0`. Broadcast A4 adalah satu alamat sebelum batas itu, yaitu `192.234.3.255`. Rentang IP yang bisa dipakai adalah `192.234.0.1` sampai `192.234.3.254`. A9 mulai di `192.234.4.0`.
 
-Pembagian dimulai dari blok terbesar, sedangkan tabel disusun menurut nomor subnet agar mudah dicocokkan dengan topologi. Kolom **Jumlah IP** menunjukkan kebutuhan host dan interface router sebelum penambahan Network ID dan broadcast. [Tabel kebutuhan IP](https://docs.google.com/spreadsheets/d/1rVodUBcBINJPgOZ-5xVqw0H3jL9A58Wp/edit?gid=1199523220#gid=1199523220) · [Tabel pembagian IP VLSM](https://docs.google.com/spreadsheets/d/1rVodUBcBINJPgOZ-5xVqw0H3jL9A58Wp/edit?gid=916994593#gid=916994593)
+Pembagian dimulai dari blok terbesar, sedangkan tabel disusun menurut nomor subnet agar mudah dicocokkan dengan topologi. Kolom **Jumlah IP** menunjukkan kebutuhan host dan interface router sebelum penambahan Network ID dan broadcast. [Tabel kebutuhan IP](https://docs.google.com/spreadsheets/d/1El9Mx7oDQb0mzidh9l5fB352cEwjhWGV8IrPthYFyMo/edit?gid=409883202#gid=409883202) · [Tabel pembagian IP VLSM](https://docs.google.com/spreadsheets/d/1El9Mx7oDQb0mzidh9l5fB352cEwjhWGV8IrPthYFyMo/edit?gid=107942586#gid=107942586)
 
 ### Rute dan kebutuhan IP
 
@@ -49,17 +49,17 @@ Kolom **Rute** menunjukkan perangkat yang berada di satu subnet. Kolom **Jumlah 
 | A1 | Cyberia → Switch1 → JJ, MyuMyu | 126 | `/25` |
 | A2 | Cyberia → Wired | 2 | `/30` |
 | A3 | Wired → Switch2 → Psyche, Copland, Schumann | 4 | `/29` |
-| A4 | Wired → Navi | 2 | `/30` |
-| A5 | Wired → Tachibana | 2 | `/30` |
-| A6 | Psyche → Switch3 → Karl, Lin | 881 | `/22` |
-| A7 | Copland → Juri | 32 | `/26` |
-| A8 | Copland → Switch4 → Masayuki | 301 | `/23` |
-| A9 | Schumann → Akashic | 4 | `/29` |
-| A10 | Schumann → Accela | 2 | `/30` |
-| A11 | Accela → Switch5 → Omnipresence, Denpa | 514 | `/22` |
-| A12 | Navi → Switch6 → Alice, Reika | 254 | `/24` |
-| A13 | Navi → Switch7 → Taro | 58 | `/26` |
-| A14 | Navi → Switch8 → Yasuo, Miho, Kuma | 143 | `/24` |
+| A4 | Psyche → Switch3 → Karl, Lin | 881 | `/22` |
+| A5 | Copland → Juri | 32 | `/26` |
+| A6 | Copland → Switch4 → Masayuki | 301 | `/23` |
+| A7 | Schumann → Akashic | 4 | `/29` |
+| A8 | Schumann → Accela | 2 | `/30` |
+| A9 | Accela → Switch5 → Omnipresence, Denpa | 514 | `/22` |
+| A10 | Wired → Navi | 2 | `/30` |
+| A11 | Navi → Switch6 → Alice, Reika | 254 | `/24` |
+| A12 | Navi → Switch7 → Taro | 58 | `/26` |
+| A13 | Navi → Switch8 → Yasuo, Miho, Kuma | 143 | `/24` |
+| A14 | Wired → Tachibana | 2 | `/30` |
 | A15 | Tachibana → Switch9 → Collective, Ghost | 267 | `/23` |
 | A16 | Tachibana → Deus | 2 | `/30` |
 | A17 | Deus → Switch10 → Lilith, Specter | 99 | `/25` |
@@ -81,17 +81,17 @@ Network ID dan broadcast menandai batas blok. Rentang IP host berisi alamat yang
 | A1 | `192.234.14.0/25` | `255.255.255.128` | `192.234.14.127` | `192.234.14.1` – `192.234.14.126` |
 | A2 | `192.234.16.56/30` | `255.255.255.252` | `192.234.16.59` | `192.234.16.57` – `192.234.16.58` |
 | A3 | `192.234.16.32/29` | `255.255.255.248` | `192.234.16.39` | `192.234.16.33` – `192.234.16.38` |
-| A4 | `192.234.16.60/30` | `255.255.255.252` | `192.234.16.63` | `192.234.16.61` – `192.234.16.62` |
-| A5 | `192.234.16.64/30` | `255.255.255.252` | `192.234.16.67` | `192.234.16.65` – `192.234.16.66` |
-| A6 | `192.234.0.0/22` | `255.255.252.0` | `192.234.3.255` | `192.234.0.1` – `192.234.3.254` |
-| A7 | `192.234.15.192/26` | `255.255.255.192` | `192.234.15.255` | `192.234.15.193` – `192.234.15.254` |
-| A8 | `192.234.8.0/23` | `255.255.254.0` | `192.234.9.255` | `192.234.8.1` – `192.234.9.254` |
-| A9 | `192.234.16.40/29` | `255.255.255.248` | `192.234.16.47` | `192.234.16.41` – `192.234.16.46` |
-| A10 | `192.234.16.68/30` | `255.255.255.252` | `192.234.16.71` | `192.234.16.69` – `192.234.16.70` |
-| A11 | `192.234.4.0/22` | `255.255.252.0` | `192.234.7.255` | `192.234.4.1` – `192.234.7.254` |
-| A12 | `192.234.12.0/24` | `255.255.255.0` | `192.234.12.255` | `192.234.12.1` – `192.234.12.254` |
-| A13 | `192.234.15.64/26` | `255.255.255.192` | `192.234.15.127` | `192.234.15.65` – `192.234.15.126` |
-| A14 | `192.234.13.0/24` | `255.255.255.0` | `192.234.13.255` | `192.234.13.1` – `192.234.13.254` |
+| A4 | `192.234.0.0/22` | `255.255.252.0` | `192.234.3.255` | `192.234.0.1` – `192.234.3.254` |
+| A5 | `192.234.15.192/26` | `255.255.255.192` | `192.234.15.255` | `192.234.15.193` – `192.234.15.254` |
+| A6 | `192.234.8.0/23` | `255.255.254.0` | `192.234.9.255` | `192.234.8.1` – `192.234.9.254` |
+| A7 | `192.234.16.40/29` | `255.255.255.248` | `192.234.16.47` | `192.234.16.41` – `192.234.16.46` |
+| A8 | `192.234.16.68/30` | `255.255.255.252` | `192.234.16.71` | `192.234.16.69` – `192.234.16.70` |
+| A9 | `192.234.4.0/22` | `255.255.252.0` | `192.234.7.255` | `192.234.4.1` – `192.234.7.254` |
+| A10 | `192.234.16.60/30` | `255.255.255.252` | `192.234.16.63` | `192.234.16.61` – `192.234.16.62` |
+| A11 | `192.234.12.0/24` | `255.255.255.0` | `192.234.12.255` | `192.234.12.1` – `192.234.12.254` |
+| A12 | `192.234.15.64/26` | `255.255.255.192` | `192.234.15.127` | `192.234.15.65` – `192.234.15.126` |
+| A13 | `192.234.13.0/24` | `255.255.255.0` | `192.234.13.255` | `192.234.13.1` – `192.234.13.254` |
+| A14 | `192.234.16.64/30` | `255.255.255.252` | `192.234.16.67` | `192.234.16.65` – `192.234.16.66` |
 | A15 | `192.234.10.0/23` | `255.255.254.0` | `192.234.11.255` | `192.234.10.1` – `192.234.11.254` |
 | A16 | `192.234.16.72/30` | `255.255.255.252` | `192.234.16.75` | `192.234.16.73` – `192.234.16.74` |
 | A17 | `192.234.14.128/25` | `255.255.255.128` | `192.234.14.255` | `192.234.14.129` – `192.234.14.254` |
