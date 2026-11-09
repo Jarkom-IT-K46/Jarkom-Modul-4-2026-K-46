@@ -15,6 +15,7 @@ Subnetting di sini memakai **CIDR**, sehingga GNS3 memakai VLSM.
 
 - [cisco.pkt](cisco.pkt) — file topologi yang didemokan.
 - [perhitungan.md](perhitungan.md) — seluruh perhitungan: labelling subnet, penggabungan, pohon CIDR, pembagian IP, alokasi IP interface, dan static route.
+- [subnetting.png](subnetting.png) — topologi dengan lingkaran subnet dan blok gabungan CIDR.
 
 ## Topologi
 
@@ -44,6 +45,12 @@ Sisi kiri Wired memakai `192.234.0.0/20`, sedangkan sisi kanan dan Cyberia memak
 | `192.234.24.0/24` | Cyberia |
 
 Blok-blok ini mengikuti arah routing, sehingga tiap router cukup punya satu route untuk tiap tetangga di arah bawah, ditambah satu default route ke arah Cyberia.
+
+## Gambar subnetting
+
+Label merah (A1–A25) menandai subnet. Label hitam (B1–J1) menandai blok hasil penggabungan, dari tahap I sampai IX di [perhitungan.md](perhitungan.md). Makin dalam lapisannya, makin awal blok itu digabung. Link Cloud–Cyberia berada di luar root karena tidak dihitung sebagai subnet.
+
+![Pembagian subnet dan penggabungan CIDR pada topologi CPT](subnetting.png)
 
 ## Catatan
 
